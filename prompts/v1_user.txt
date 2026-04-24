@@ -1,0 +1,7 @@
+Por favor, adapta el siguiente contenido a Lectura Fácil siguiendo estrictamente todas tus instrucciones de sistema. Recuerda: aplica una síntesis extrema, usa el corte de frase en líneas cortas y elimina la información secundaria.
+
+Título original:
+{title}
+
+Texto original:
+{text}

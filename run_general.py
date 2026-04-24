@@ -123,16 +123,23 @@ def row_to_context(row: dict, item_id: str, number_col: str, title_col: str, tex
     Args:
         row: Dictionary representation of Excel row
         item_id: Unique identifier for this item
-        number_col: Name of the number column
+        number_col: Name of the number column (can be None)
         title_col: Name of the title column
         text_col: Name of the text column
     
     Returns:
         Dictionary with number, title, and text
     """
+    number = None
+    if number_col and number_col in row:
+        try:
+            number = int(row.get(number_col)) if row.get(number_col) is not None else None
+        except (ValueError, TypeError):
+            number = None
+    
     return {
         "item_id": item_id,
-        "number": int(row.get(number_col)) if row.get(number_col) is not None else None,
+        "number": number,
         "title": row.get(title_col),
         "text": row.get(text_col),
     }
@@ -171,10 +178,17 @@ def process_excel(
     except Exception as e:
         raise ValueError(f"Failed to read Excel: {e}")
 
-    # Validate columns exist
-    for col in [id_col, number_col, title_col, text_col]:
+    # Validate required columns for this format
+    required_cols = ["title", "normal text", "ground truth", "output"]
+    for col in required_cols:
         if col not in df.columns:
-            raise ValueError(f"Column '{col}' not found in Excel. Available: {list(df.columns)}")
+            raise ValueError(f"Required column '{col}' not found in Excel. Available: {list(df.columns)}")
+
+    # Set column mappings
+    title_col = "title"
+    text_col = "normal text"
+    id_col = None  # Use row index as ID
+    number_col = None  # No number column
 
     # Slice rows
     total_rows = len(df)
@@ -187,10 +201,13 @@ def process_excel(
     output_dir = Path(f"outputs/{safe_name(task_name)}/{safe_name(model_key)}")
     output_jsonl = output_dir / "results.jsonl"
 
+    # Initialize results list for Excel output
+    results = []
+
     # Process each row
     for idx in range(from_row, to_row):
         row = df.iloc[idx]
-        item_id = str(row.get(id_col, idx))
+        item_id = str(row.get(id_col, idx)) if id_col else str(idx)
 
         # Build context
         context = row_to_context(row, item_id, number_col, title_col, text_col)
@@ -227,6 +244,7 @@ def process_excel(
 
             # Write to JSONL
             write_line(output_jsonl, json.dumps(output_record))
+            results.append(result_text)
             print(f"  ✓ Completed")
 
         except Exception as e:
@@ -242,10 +260,17 @@ def process_excel(
                 "error": str(e),
             }
             write_line(output_jsonl, json.dumps(error_record))
+            results.append(f"ERROR: {str(e)}")
 
     print(f"\nResults saved to: {output_jsonl}")
-    export_jsonl_to_excel(output_jsonl, output_dir / "results.xlsx")
-    print(f"Excel export saved to: {output_dir / 'results.xlsx'}")
+    
+    # Update DataFrame with results and export to Excel
+    df["output"] = df["output"].astype(str)  # Ensure column is string type
+    for i, result in enumerate(results):
+        df.at[from_row + i, "output"] = str(result)
+    output_xlsx = output_dir / "results.xlsx"
+    df.to_excel(output_xlsx, index=False)
+    print(f"Excel export saved to: {output_xlsx}")
 
 
 # ====================== EXCEL EXPORT ======================
@@ -311,14 +336,14 @@ def main():
     parser.add_argument(
         "--id-col",
         type=str,
-        default="id",
-        help="Column name for unique identifier (default: id)"
+        default=None,
+        help="Column name for unique identifier (default: None, uses row index)"
     )
     parser.add_argument(
         "--number-col",
         type=str,
-        default="number",
-        help="Column name for number field (default: number)"
+        default=None,
+        help="Column name for number field (default: None)"
     )
     parser.add_argument(
         "--title-col",
@@ -329,8 +354,8 @@ def main():
     parser.add_argument(
         "--text-col",
         type=str,
-        default="text",
-        help="Column name for text/input field (default: text)"
+        default="normal text",
+        help="Column name for text/input field (default: normal text)"
     )
     parser.add_argument(
         "--from-row",

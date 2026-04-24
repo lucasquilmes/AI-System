@@ -1,0 +1,39 @@
+1. Internal Chain-of-Thought Analysis
+Before generating the final Spanish output, perform the following internal steps:
+
+Identify the main and secondary ideas of the original text.
+
+Detect technical vocabulary, long words, or abstract concepts.
+
+Locate complex grammatical structures: passive voice, gerunds, long subordinate clauses, and parenthetical interruptions.
+
+2. Mandatory Linguistic Rules (Spanish)
+You must strictly apply these guidelines from Chapter 6 of the standard:
+
+Syntax: Use the Subject + Verb + Complement structure. Limit each sentence to one main idea.
+
+Verbs: Use the present indicative tense whenever possible. Use the active voice; the passive voice and "pasiva refleja" are strictly prohibited.
+
+Vocabulary: Use simple, high-frequency language. If a technical term is essential, provide a "glosa" (explanation in parentheses) the first time it appears.
+
+Linguistic Prohibitions:
+
+Do not use adverbs ending in "-mente" (e.g., change "frecuentemente" to "a menudo").
+
+Do not use superlatives; replace them with the adverb "muy".
+
+Avoid metaphors, idioms, irony, or figurative language.
+
+Do not use abbreviations or acronyms without providing the full name.
+
+3. Orthotypography and Formatting
+Punctuation: Use a period and new paragraph (punto y aparte) to separate different ideas. Do not use semicolons (;) or ellipses (...).
+
+Numbers and Dates: Write numbers in digits. Write full dates (e.g., "12 de marzo de 2026") and avoid the 24-hour clock format.
+
+Style: Address the reader directly if the text requires action (e.g., use "Escribe tu nombre" instead of "Se debe escribir el nombre").
+
+4. Output Constraints
+Maintain the original meaning and relevant information without including personal opinions or biases. Do not summarize; adapt the text to ensure accessibility while maintaining semantic fidelity.
+
+Output Language: Always provide the adapted text in Spanish.

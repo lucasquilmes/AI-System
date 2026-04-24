@@ -39,6 +39,48 @@ MODEL_REGISTRY: Dict[str, Dict[str, Any]] = {
         "num_ctx": 8192,
         "seed": 42,
     },
+    "llama3.3": {
+        "provider": "ollama",
+        "temperature": 0.0,
+        "num_ctx": 8192,
+        "seed": 42,
+    },
+    "qwen2.5:32b": {
+        "provider": "ollama",
+        "temperature": 0.0,
+        "num_ctx": 8192,
+        "seed": 42,
+    },
+    "mixtral": {
+        "provider": "ollama",
+        "temperature": 0.0,
+        "num_ctx": 8192,
+        "seed": 42,
+    },
+    "gemma2:27b": {
+        "provider": "ollama",
+        "temperature": 0.0,
+        "num_ctx": 8192,
+        "seed": 42,
+    },
+    "command-r": {
+        "provider": "ollama",
+        "temperature": 0.0,
+        "num_ctx": 8192,
+        "seed": 42,
+    },
+    "mistral-nemo": {
+        "provider": "ollama",
+        "temperature": 0.0,
+        "num_ctx": 8192,
+        "seed": 42,
+    },
+    "llama3.1:8b": {
+        "provider": "ollama",
+        "temperature": 0.0,
+        "num_ctx": 8192,
+        "seed": 42,
+    },
 
     # --- OpenAI ---
     "gpt-4o-mini": {

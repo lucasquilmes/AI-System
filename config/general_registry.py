@@ -31,4 +31,18 @@ GENERAL_REGISTRY = {
         "output_prefix": "custom",
     },
     # Add other tasks as needed
+
+    "v0": {
+        "name": "v0",
+        "system_prompt": Path("prompts/v0_system.txt"),
+        "user_prompt": Path("prompts/v0_user.txt"),
+        "output_prefix": "v0",
+    },
+
+    "v1": {
+        "name": "v1",
+        "system_prompt": Path("prompts/v1_system.txt"),
+        "user_prompt": Path("prompts/v1_user.txt"),
+        "output_prefix": "v1",
+    },
 }

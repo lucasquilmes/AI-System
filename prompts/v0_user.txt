@@ -1,0 +1,7 @@
+Por favor, adapta el siguiente contenido a los estándares de Lectura Fácil siguiendo estrictamente tus instrucciones de sistema.
+
+Título original:
+{title}
+
+Texto original (puede contener errores de OCR):
+{text}
