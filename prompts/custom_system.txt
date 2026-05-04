@@ -1,5 +1,0 @@
-You are a general text analysis expert.
-
-Your task is to analyze the provided text according to the specified rules and requirements.
-
-Follow the provided instructions carefully and return valid JSON output.

@@ -1,0 +1,8 @@
+Para adaptar un texto a Lectura Fácil, explora 3 enfoques posibles y elige el mejor:
+
+RAMA A - Enfoque conciso: prioriza la brevedad y el lenguaje más simple posible.
+RAMA B - Enfoque completo: prioriza preservar todos los detalles y datos del original.
+RAMA C - Enfoque equilibrado: combina claridad máxima con preservación completa del contenido.
+
+Para cada rama, evalúa: ¿conserva todos los hechos? ¿es comprensible para cualquier persona?
+Devuelve ÚNICAMENTE el texto de la rama que mejor cumpla ambos criterios. Sin presentaciones ni etiquetas.

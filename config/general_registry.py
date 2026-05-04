@@ -45,4 +45,80 @@ GENERAL_REGISTRY = {
         "user_prompt": Path("prompts/v1_user.txt"),
         "output_prefix": "v1",
     },
+
+    "v2": {
+        "name": "v2",
+        "system_prompt": Path("prompts/v2_system.txt"),
+        "user_prompt": Path("prompts/v2_user.txt"),
+        "output_prefix": "v2",
+    },
+
+    "v3": {
+        "name": "v3",
+        "system_prompt": Path("prompts/v3_system.txt"),
+        "user_prompt": Path("prompts/v3_user.txt"),
+        "output_prefix": "v3",
+    },
+
+    # --- Técnicas de prompting (Lectura Fácil) ---
+    "zero_shot": {
+        "name": "zero_shot",
+        "system_prompt": Path("prompts/zero_shot_system.txt"),
+        "user_prompt": Path("prompts/zero_shot_user.txt"),
+        "output_prefix": "zero_shot",
+    },
+    "few_shot": {
+        "name": "few_shot",
+        "system_prompt": Path("prompts/few_shot_system.txt"),
+        "user_prompt": Path("prompts/few_shot_user.txt"),
+        "output_prefix": "few_shot",
+    },
+    "role": {
+        "name": "role",
+        "system_prompt": Path("prompts/role_system.txt"),
+        "user_prompt": Path("prompts/role_user.txt"),
+        "output_prefix": "role",
+    },
+    "cot": {
+        "name": "cot",
+        "system_prompt": Path("prompts/cot_system.txt"),
+        "user_prompt": Path("prompts/cot_user.txt"),
+        "output_prefix": "cot",
+    },
+    "zs_cot": {
+        "name": "zs_cot",
+        "system_prompt": Path("prompts/zs_cot_system.txt"),
+        "user_prompt": Path("prompts/zs_cot_user.txt"),
+        "output_prefix": "zs_cot",
+    },
+    "tot": {
+        "name": "tot",
+        "system_prompt": Path("prompts/tot_system.txt"),
+        "user_prompt": Path("prompts/tot_user.txt"),
+        "output_prefix": "tot",
+    },
+    "self_cons": {
+        "name": "self_cons",
+        "system_prompt": Path("prompts/self_cons_system.txt"),
+        "user_prompt": Path("prompts/self_cons_user.txt"),
+        "output_prefix": "self_cons",
+    },
+    "self_ref": {
+        "name": "self_ref",
+        "system_prompt": Path("prompts/self_ref_system.txt"),
+        "user_prompt": Path("prompts/self_ref_user.txt"),
+        "output_prefix": "self_ref",
+    },
+    "ensemble": {
+        "name": "ensemble",
+        "system_prompt": Path("prompts/ensemble_system.txt"),
+        "user_prompt": Path("prompts/ensemble_user.txt"),
+        "output_prefix": "ensemble",
+    },
+    "meta": {
+        "name": "meta",
+        "system_prompt": Path("prompts/meta_system.txt"),
+        "user_prompt": Path("prompts/meta_user.txt"),
+        "output_prefix": "meta",
+    },
 }

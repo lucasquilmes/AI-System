@@ -16,3 +16,14 @@ anthropic>=0.25.0
 
 langchain-google-genai>=0.0.1
 google-generativeai>=0.3.0
+
+# Evaluation — métricas core
+evaluate>=0.4.0
+sacrebleu>=2.4.0
+sacremoses>=0.1.0
+textstat>=0.7.3
+
+# Evaluation — nuevas métricas
+bert-score>=0.3.13        # BertScore semántico (descarga ~700 MB en el primer uso)
+rouge-score>=0.1.2        # Rouge-L (superposición léxica con referencia)
+spacy>=3.7.0              # NER Density — requiere también: python -m spacy download es_core_news_sm

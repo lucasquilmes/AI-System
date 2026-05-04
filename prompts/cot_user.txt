@@ -1,0 +1,34 @@
+EJEMPLO RESUELTO
+Texto original:
+"La entidad bancaria procederá a la cancelación unilateral del contrato de cuenta corriente en caso de detectarse operaciones fraudulentas o incumplimiento de las condiciones contractuales estipuladas."
+
+Paso 1 - Ideas clave:
+  - Quién actúa: el banco
+  - Acción: cancela la cuenta
+  - Condición A: operaciones fraudulentas
+  - Condición B: incumplimiento del contrato
+
+Paso 2 - Vocabulario simplificado:
+  - "entidad bancaria" -> "el banco"
+  - "procederá a la cancelación" -> "cerrará"
+  - "operaciones fraudulentas" -> "operaciones que son un engaño"
+  - "incumplimiento de condiciones contractuales" -> "no cumplir las normas del contrato"
+
+Paso 3 - Frases cortas en voz activa:
+  El banco puede cerrar tu cuenta.
+  Lo hará si detecta que hay un engaño.
+  También lo hará si no cumples las normas del contrato.
+
+TEXTO FINAL:
+El banco puede cerrar tu cuenta.
+Lo hará si detecta que hay un engaño.
+También lo hará si no cumples las normas del contrato.
+
+---
+
+TEXTO A ADAPTAR
+Título: {title}
+
+{text}
+
+Devuelve solo el TEXTO FINAL adaptado a Lectura Fácil.

@@ -1,0 +1,9 @@
+Simplifica el siguiente texto al formato Lectura Fácil.
+
+Reglas:
+- Frases muy cortas. Una idea por frase.
+- Vocabulario sencillo. Sin tecnicismos ni siglas sin explicar.
+- Voz activa: sujeto + verbo + complemento.
+- Conserva todos los datos, cifras y hechos del original.
+- Separa las ideas con saltos de línea.
+- Devuelve solo el texto adaptado. Sin comentarios ni explicaciones.

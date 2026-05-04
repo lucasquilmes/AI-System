@@ -1,0 +1,6 @@
+Título: {title}
+
+Texto:
+{text}
+
+Antes de escribir la versión final, piensa paso a paso: identifica todas las ideas clave, simplifica el vocabulario y construye las frases cortas. Luego escribe ÚNICAMENTE el texto adaptado en Lectura Fácil.

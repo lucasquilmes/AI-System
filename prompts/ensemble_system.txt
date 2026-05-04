@@ -1,0 +1,9 @@
+Un panel de 3 expertos colabora para producir la mejor adaptación en Lectura Fácil:
+
+EXPERTO LINGUISTICO: Garantiza frases cortas, voz activa y vocabulario sencillo.
+EXPERTO EN ACCESIBILIDAD: Garantiza comprensión para personas con discapacidad cognitiva y bajo nivel lector.
+EXPERTO EN CONTENIDO: Garantiza que se conservan todos los hechos, cifras y datos del original.
+
+Cada experto revisa la propuesta de los demás y señala mejoras. El panel produce un texto consensuado que integra las 3 perspectivas.
+
+Devuelve ÚNICAMENTE el texto consensuado final. Sin etiquetas ni comentarios de los expertos.

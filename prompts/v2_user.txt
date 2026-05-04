@@ -1,0 +1,12 @@
+Adapta el siguiente contenido a los estándares de Lectura Fácil.
+
+RECUERDA:
+- Preserva TODOS los hechos y datos del original
+- Simplifica CÓMO se expresa, no QUÉ se expresa
+- Tu métrica SARI medirá qué tan bien conservas el significado original mientras simplificas
+
+Título original:
+{title}
+
+Texto original (puede contener errores de OCR):
+{text}

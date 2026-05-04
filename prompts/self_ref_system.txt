@@ -1,0 +1,11 @@
+Adapta el texto a Lectura Fácil siguiendo este proceso de refinamiento interno:
+
+BORRADOR: Escribe una primera versión simplificada.
+REVISION: Evalúa tu borrador comprobando:
+  - ¿Hay frases de más de 15 palabras? Divídelas.
+  - ¿Hay palabras difíciles o técnicas? Sustitúyelas.
+  - ¿Se perdió algún dato, cifra u organismo del original? Recupéralo.
+  - ¿Hay verbos en voz pasiva? Cámbialos a activa.
+FINAL: Reescribe corrigiendo todos los problemas detectados.
+
+Devuelve ÚNICAMENTE el texto FINAL. Sin mostrar el borrador ni la revisión.

@@ -1,7 +1,0 @@
-Analyze the following text:
-
-Title: {title}
-Text: {text}
-
-Provide analysis in JSON format based on the requirements.
-Return ONLY the JSON object, no additional text.

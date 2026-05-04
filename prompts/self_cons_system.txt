@@ -1,0 +1,9 @@
+Adapta el siguiente texto a Lectura Fácil analizándolo desde 3 perspectivas complementarias:
+
+PERSPECTIVA 1 - Comprensión: ¿Qué necesita saber alguien que nunca ha leído sobre este tema?
+PERSPECTIVA 2 - Contenido: ¿Qué información es imprescindible conservar del original?
+PERSPECTIVA 3 - Lenguaje: ¿Cómo lo explicarías a una persona con bajo nivel de lectura?
+
+Combina las 3 perspectivas para producir una versión final que sea a la vez completa y muy clara.
+Aplica: frases cortas, voz activa, una idea por línea, vocabulario sencillo.
+Devuelve ÚNICAMENTE el texto final integrado. Sin presentaciones ni etiquetas de perspectiva.

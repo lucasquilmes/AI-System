@@ -3,37 +3,32 @@ from typing import Dict, Any
 # Keys are the model names you pass via --model
 MODEL_REGISTRY: Dict[str, Dict[str, Any]] = {
     # --- Local / open-source via Ollama ---
-    "llama3:8b": {
+    # Modelos verificados con: ollama list
+    "llama3.1:8b": {
         "provider": "ollama",
         "temperature": 0.0,
         "num_ctx": 8192,
         "seed": 42,
     },
-    "qwen2.5": {
+    "mistral-nemo": {
         "provider": "ollama",
         "temperature": 0.0,
         "num_ctx": 8192,
         "seed": 42,
     },
-    "qwen3:8b": {
+    "command-r": {
         "provider": "ollama",
         "temperature": 0.0,
         "num_ctx": 8192,
         "seed": 42,
     },
-    "deepseek-r1": {
+    "gemma2:27b": {
         "provider": "ollama",
         "temperature": 0.0,
         "num_ctx": 8192,
         "seed": 42,
     },
-    "mistral:7b": {
-        "provider": "ollama",
-        "temperature": 0.0,
-        "num_ctx": 8192,
-        "seed": 42,
-    },
-    "kimi-k2.5:cloud": {
+    "mixtral": {
         "provider": "ollama",
         "temperature": 0.0,
         "num_ctx": 8192,
@@ -46,36 +41,6 @@ MODEL_REGISTRY: Dict[str, Dict[str, Any]] = {
         "seed": 42,
     },
     "qwen2.5:32b": {
-        "provider": "ollama",
-        "temperature": 0.0,
-        "num_ctx": 8192,
-        "seed": 42,
-    },
-    "mixtral": {
-        "provider": "ollama",
-        "temperature": 0.0,
-        "num_ctx": 8192,
-        "seed": 42,
-    },
-    "gemma2:27b": {
-        "provider": "ollama",
-        "temperature": 0.0,
-        "num_ctx": 8192,
-        "seed": 42,
-    },
-    "command-r": {
-        "provider": "ollama",
-        "temperature": 0.0,
-        "num_ctx": 8192,
-        "seed": 42,
-    },
-    "mistral-nemo": {
-        "provider": "ollama",
-        "temperature": 0.0,
-        "num_ctx": 8192,
-        "seed": 42,
-    },
-    "llama3.1:8b": {
         "provider": "ollama",
         "temperature": 0.0,
         "num_ctx": 8192,

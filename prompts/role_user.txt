@@ -1,0 +1,5 @@
+Adapta este documento a Lectura Fácil:
+
+Título: {title}
+
+{text}
