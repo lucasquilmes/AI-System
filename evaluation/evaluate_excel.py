@@ -17,7 +17,7 @@ def main():
         description="Evalúa todas las métricas para una versión y todos sus modelos."
     )
     _VERSIONS = [
-        "v0", "v1", "v2", "v3",
+        "v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "audit", "motor",
         "zero_shot", "few_shot", "role", "cot", "zs_cot",
         "tot", "self_cons", "self_ref", "ensemble", "meta",
     ]
@@ -37,6 +37,8 @@ def main():
                         help="Omite BertScore (~700 MB de modelo, lento)")
     parser.add_argument("--skip-ner", action="store_true",
                         help="Omite NER density (requiere spaCy es_core_news_sm)")
+    parser.add_argument("--dataset", default="test_poor",
+                        help="Nombre del dataset (subcarpeta dentro de outputs/)")
 
     args = parser.parse_args()
     row_selection = parse_row_selection(args.rows)
@@ -48,6 +50,7 @@ def main():
             col_original=args.col_original,
             col_generado=args.col_generado,
             col_referencias=args.col_referencias,
+            dataset=args.dataset,
             row_selection=row_selection,
             skip_bert=args.skip_bert,
             skip_ner=args.skip_ner,
@@ -61,9 +64,6 @@ def main():
             f"(sin texto={stats['skipped_no_text']}, filtro={stats['skipped_filter']})"
         )
 
-        if not stats["results_df"].empty:
-            print("\nResumen por modelo:")
-            print(stats["summary_stats"].to_string(index=False))
 
         sys.exit(0)
 

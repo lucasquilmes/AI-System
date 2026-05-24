@@ -60,6 +60,55 @@ GENERAL_REGISTRY = {
         "output_prefix": "v3",
     },
 
+    "v4": {
+        "name": "v4",
+        "system_prompt": Path("prompts/v4_system.txt"),
+        "user_prompt": Path("prompts/v4_user.txt"),
+        "output_prefix": "v4",
+    },
+
+    "v7": {
+        "name": "v7",
+        "system_prompt": Path("prompts/v7_system.txt"),
+        "user_prompt": Path("prompts/v7_user.txt"),
+        "output_prefix": "v7",
+    },
+
+    "v8": {
+        "name": "v8",
+        "system_prompt": Path("prompts/v8_system.txt"),
+        "user_prompt": Path("prompts/v8_user.txt"),
+        "output_prefix": "v8",
+    },
+
+    "v5": {
+        "name": "v5",
+        "system_prompt": Path("prompts/v5_system.txt"),
+        "user_prompt": Path("prompts/v5_user.txt"),
+        "output_prefix": "v5",
+    },
+
+    "v6": {
+        "name": "v6",
+        "system_prompt": Path("prompts/v6_system.txt"),
+        "user_prompt": Path("prompts/v6_user.txt"),
+        "output_prefix": "v6",
+    },
+
+    "motor": {
+        "name": "motor",
+        "system_prompt": Path("prompts/motor_system.txt"),
+        "user_prompt": Path("prompts/motor_user.txt"),
+        "output_prefix": "motor",
+    },
+
+    "audit": {
+        "name": "audit",
+        "system_prompt": Path("prompts/audit_system.txt"),
+        "user_prompt": Path("prompts/audit_user.txt"),
+        "output_prefix": "audit",
+    },
+
     # --- Técnicas de prompting (Lectura Fácil) ---
     "zero_shot": {
         "name": "zero_shot",

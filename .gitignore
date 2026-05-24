@@ -1,11 +1,9 @@
+# ── Python ────────────────────────────────────────────────────────────────────
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
-env/
-venv/
-.venv/
 pip-log.txt
 pip-delete-this-directory.txt
 .tox/
@@ -16,12 +14,28 @@ nosetests.xml
 coverage.xml
 *.cover
 *.log
-.git
 .mypy_cache
 .pytest_cache
 .hypothesis
-outputs/
+
+# ── Entornos virtuales ────────────────────────────────────────────────────────
+env/
+venv/
+.venv/
+
+# ── Git / IDE ─────────────────────────────────────────────────────────────────
+.git
 .claude/
+
+# ── Outputs del modelo (resultados de inferencia y evaluación) ────────────────
+outputs/
 *.rar
+
+# ── Plots generados (PNGs por dataset y combinados) ──────────────────────────
+plots/test_poor/
+plots/exemples_lectura_facil_formatted/
+plots/combined/
+
+# ── Datos sensibles / ficheros grandes ────────────────────────────────────────
 data/*.xlsx
 data/*.xlsb

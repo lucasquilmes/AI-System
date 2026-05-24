@@ -1,0 +1,78 @@
+Estudia los 4 ejemplos siguientes. Son el patrón exacto de vocabulario, apertura de frase y estructura que debes imitar. Aplica las 3 fases internas al texto del final.
+
+=== EJEMPLO 1 — patrón: sigla + URL + estructura por bloques ===
+
+ORIGINAL:
+El Punto de Acceso General electrónico (PAGe) es un portal de internet de la Administración General del Estado cuya URL es https://administracion.gob.es. Constituye un punto único de acceso para la ciudadanía a todas las administraciones públicas.
+
+GT:
+El Punto de Acceso General Electrónico
+es un sitio web
+de la Administración General del Estado.
+
+A partir de ahora lo llamaremos PAGe.
+
+En el PAGe encontrarás información
+sobre cómo funciona
+y se organiza el Estado
+y de las Administraciones Públicas.
+
+=== EJEMPLO 2 — patrón: "Te ofrecemos" + "cada X días" + "aplicación" ===
+
+ORIGINAL:
+Ponemos a tu disposición un buscador de empleo público. Puedes suscribirte a nuestro boletín semanal, recibir avisos personalizados en tu correo electrónico o descargarte nuestra app de empleo público.
+
+GT:
+Te ofrecemos
+un buscador de empleo público.
+
+Puedes suscribirte
+a nuestro boletín de empleo,
+que se publica cada 7 días.
+
+Si quieres, te enviamos avisos personalizados
+a tu correo electrónico.
+Además, puedes descargarte en tu móvil
+nuestra aplicación de empleo público.
+
+=== EJEMPLO 3 — patrón: secciones con título + viñetas ===
+
+ORIGINAL:
+Te ofrecemos atención y orientación a través de diferentes canales de atención: Atención presencial: te informamos sobre las oficinas de información y atención a la ciudadanía de las que dispones. Atención telefónica: te informamos sobre los teléfonos de atención general en las distintas Administraciones Públicas.
+
+GT:
+Atención presencial.
+Te informamos sobre las oficinas
+de información y atención a la ciudadanía
+que tienes disponibles.
+
+Atención telefónica.
+Te informamos sobre los teléfonos
+de atención general
+de las Administraciones Públicas.
+
+=== EJEMPLO 4 — patrón: lista numerada + "Puedes" + "Si quieres" ===
+
+ORIGINAL:
+Ponemos a tu disposición un buscador. Puedes suscribirte a nuestro boletín quincenal, recibir avisos personalizados en tu correo electrónico o descargarte nuestra app de ayudas económicas, subvenciones, becas y premios.
+
+GT:
+Te ofrecemos un buscador de ayudas,
+subvenciones, becas y premios.
+
+Puedes suscribirte
+a nuestro boletín de ayudas,
+subvenciones, becas y premios,
+que se publica cada 15 días.
+
+Si quieres, te enviamos avisos personalizados
+a tu correo electrónico.
+
+Además, puedes descargarte en tu móvil
+nuestra aplicación de ayudas, subvenciones, becas y premios.
+
+=== TEXTO A ADAPTAR ===
+
+Título: {title}
+
+{text}

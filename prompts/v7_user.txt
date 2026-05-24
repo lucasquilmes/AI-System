@@ -1,0 +1,100 @@
+A continuación tienes 4 ejemplos reales del dataset. Estudia con atención el vocabulario exacto, los saltos de línea y la estructura usados en cada adaptación. Aplica exactamente ese estilo al texto del final.
+
+=== EJEMPLO 1 ===
+
+TEXTO ORIGINAL:
+El Punto de Acceso General electrónico (PAGe) es un portal de internet de la Administración General del Estado cuya URL es https://administracion.gob.es. Constituye un punto único de acceso para la ciudadanía a todas las administraciones públicas.
+
+LECTURA FÁCIL CORRECTA:
+El Punto de Acceso General Electrónico
+es un sitio web
+de la Administración General del Estado.
+
+A partir de ahora lo llamaremos PAGe.
+
+En el PAGe encontrarás información
+sobre cómo funciona
+y se organiza el Estado
+y de las Administraciones Públicas.
+
+--- Patrones aplicados ---
+- "portal de internet" → "sitio web"
+- URL eliminada
+- Sigla: nombre completo + "A partir de ahora lo llamaremos PAGe"
+- Frases divididas en líneas cortas
+
+=== EJEMPLO 2 ===
+
+TEXTO ORIGINAL:
+Ponemos a tu disposición un buscador de empleo público. Puedes suscribirte a nuestro boletín semanal, recibir avisos personalizados en tu correo electrónico o descargarte nuestra app de empleo público.
+
+LECTURA FÁCIL CORRECTA:
+Te ofrecemos
+un buscador de empleo público.
+
+Puedes suscribirte
+a nuestro boletín de empleo,
+que se publica cada 7 días.
+
+Si quieres, te enviamos avisos personalizados
+a tu correo electrónico.
+Además, puedes descargarte en tu móvil
+nuestra aplicación de empleo público.
+
+--- Patrones aplicados ---
+- "app" → "aplicación"
+- "semanal" → "cada 7 días"
+- "Ponemos a tu disposición" → "Te ofrecemos"
+- Cada idea en bloque separado
+
+=== EJEMPLO 3 ===
+
+TEXTO ORIGINAL:
+Ponemos a tu disposición un buscador. Puedes suscribirte a nuestro boletín quincenal, recibir avisos personalizados en tu correo electrónico o descargarte nuestra app de ayudas económicas, subvenciones, becas y premios.
+
+LECTURA FÁCIL CORRECTA:
+Te ofrecemos un buscador de ayudas,
+subvenciones, becas y premios.
+
+Puedes suscribirte
+a nuestro boletín de ayudas,
+subvenciones, becas y premios,
+que se publica cada 15 días.
+
+Si quieres, te enviamos avisos personalizados
+a tu correo electrónico.
+
+Además, puedes descargarte en tu móvil
+nuestra aplicación de ayudas, subvenciones, becas y premios.
+
+--- Patrones aplicados ---
+- "quincenal" → "cada 15 días"
+- "app" → "aplicación"
+- "Ponemos a tu disposición" → "Te ofrecemos"
+
+=== EJEMPLO 4 ===
+
+TEXTO ORIGINAL:
+Te ofrecemos atención y orientación a través de diferentes canales de atención: Atención presencial: te informamos sobre las oficinas de información y atención a la ciudadanía de las que dispones. Atención telefónica: te informamos sobre los teléfonos de atención general en las distintas Administraciones Públicas.
+
+LECTURA FÁCIL CORRECTA:
+Atención presencial.
+Te informamos sobre las oficinas
+de información y atención a la ciudadanía
+que tienes disponibles.
+
+Atención telefónica.
+Te informamos sobre los teléfonos
+de atención general
+de las Administraciones Públicas.
+
+--- Patrones aplicados ---
+- Cada canal como sección con título propio + punto
+- Frases divididas en varias líneas cortas
+- "ciudadanía" → "que tienes disponibles" (referido a las oficinas)
+
+=== TEXTO A ADAPTAR ===
+
+Título: {title}
+
+{text}

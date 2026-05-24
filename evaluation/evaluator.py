@@ -28,12 +28,13 @@ def evaluate_version(
     col_original,
     col_generado,
     col_referencias,
+    dataset="test_poor",
     row_selection=None,
     skip_bert=False,
     skip_ner=False,
 ):
-    base_dir = Path("outputs") / version
-    general_dir = Path("outputs") / "general"
+    base_dir = Path("outputs") / dataset / version
+    general_dir = Path("outputs") / dataset / "general"
     general_dir.mkdir(parents=True, exist_ok=True)
     output_file = general_dir / f"{version.upper()}_general_results.xlsx"
 
@@ -104,14 +105,25 @@ def evaluate_version(
 
             rouge_l = calcular_rouge_l(texto_generado, referencias)
             bleu = calcular_bleu(texto_generado, referencias)
-            levenshtein = calcular_levenshtein_normalizada(texto_original, texto_generado)
+            levenshtein_similarity = 1 - calcular_levenshtein_normalizada(texto_generado, referencias)
 
             # --- Métricas de síntesis y superficie ---
             compression_ratio = calcular_compression_ratio(texto_original, texto_generado)
+            compression_ratio_referencias = calcular_compression_ratio(texto_original, referencias)
             lmo_original = calcular_lmo(texto_original)
             lmo_generado = calcular_lmo(texto_generado)
             ttr = calcular_ttr(texto_generado)
+            ttr_original = calcular_ttr(texto_original)
+            ttr_referencias = calcular_ttr(referencias)
             complex_words_ratio = calcular_complex_words_ratio(texto_generado)
+            complex_words_ratio_original = calcular_complex_words_ratio(texto_original)
+            complex_words_ratio_referencias = calcular_complex_words_ratio(referencias)
+
+            # --- Métricas ratio (output vs GT) ---
+            flesch_ratio = round(flesch_generado / flesch_referencias, 4) if flesch_referencias and flesch_referencias != 0 else None
+            compression_ratio_rel = round(compression_ratio / compression_ratio_referencias, 4) if compression_ratio_referencias and compression_ratio_referencias != 0 else None
+            ttr_ratio = round(ttr / ttr_referencias, 4) if ttr_referencias and ttr_referencias != 0 else None
+            cwr_ratio = round(complex_words_ratio / complex_words_ratio_referencias, 4) if complex_words_ratio_referencias and complex_words_ratio_referencias != 0 else None
 
             # --- Métricas pesadas (opcionales via --skip-bert / --skip-ner) ---
             bert_score_f1 = None
@@ -137,17 +149,26 @@ def evaluate_version(
                 "rouge_l": rouge_l,
                 "bleu": bleu,
                 "bert_score_f1": bert_score_f1,
-                "levenshtein_normalizada": levenshtein,
+                "levenshtein_similarity": levenshtein_similarity,
                 # Legibilidad
                 "flesch_original": flesch_original,
                 "flesch_generado": flesch_generado,
                 "flesch_referencias": flesch_referencias,
+                "flesch_ratio": flesch_ratio,
                 # Síntesis y superficie
                 "compression_ratio": compression_ratio,
+                "compression_ratio_referencias": compression_ratio_referencias,
+                "compression_ratio_rel": compression_ratio_rel,
                 "lmo_original": lmo_original,
                 "lmo_generado": lmo_generado,
                 "ttr": ttr,
+                "ttr_original": ttr_original,
+                "ttr_referencias": ttr_referencias,
+                "ttr_ratio": ttr_ratio,
                 "complex_words_ratio": complex_words_ratio,
+                "complex_words_ratio_original": complex_words_ratio_original,
+                "complex_words_ratio_referencias": complex_words_ratio_referencias,
+                "cwr_ratio": cwr_ratio,
                 # NER (opcionales)
                 "ner_density_original": ner_density_original,
                 "ner_density_generado": ner_density_generado,

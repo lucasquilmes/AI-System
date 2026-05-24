@@ -46,6 +46,12 @@ MODEL_REGISTRY: Dict[str, Dict[str, Any]] = {
         "num_ctx": 8192,
         "seed": 42,
     },
+    "aya-expanse:32b": {
+        "provider": "ollama",
+        "temperature": 0.0,
+        "num_ctx": 8192,
+        "seed": 42,
+    },
 
     # --- OpenAI ---
     "gpt-4o-mini": {

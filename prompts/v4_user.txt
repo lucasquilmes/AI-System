@@ -1,0 +1,43 @@
+A continuación tienes 2 ejemplos reales de textos administrativos adaptados correctamente a Lectura Fácil. Estudia el estilo, la longitud y la estructura, y aplícalos al texto del final.
+
+=== EJEMPLO 1 ===
+
+TEXTO ORIGINAL:
+Ponemos a tu disposición un buscador. Puedes suscribirte a nuestro boletín quincenal, recibir avisos personalizados en tu correo electrónico o descargarte nuestra app de ayudas económicas, subvenciones, becas y premios.
+
+LECTURA FÁCIL CORRECTA:
+Te ofrecemos un buscador de ayudas, subvenciones, becas y premios.
+
+Puedes suscribirte a nuestro boletín de ayudas, subvenciones, becas y premios.
+El boletín se publica cada 15 días.
+
+Si quieres, te enviamos avisos personalizados a tu correo electrónico.
+
+Además, puedes descargarte en tu móvil nuestra aplicación de ayudas, subvenciones, becas y premios.
+
+=== EJEMPLO 2 ===
+
+TEXTO ORIGINAL:
+Te ofrecemos atención y orientación a través de diferentes canales de atención: Atención presencial: te informamos sobre las oficinas de información y atención a la ciudadanía de las que dispones. Atención telefónica: te informamos sobre los teléfonos de atención general en las distintas Administraciones Públicas. Atención vía web: te damos acceso a las webs públicas, muchas de las cuales disponen de buzones de atención. Redes sociales: muchas de las redes sociales públicas responden a tus consultas; en cualquier caso, siguiéndolas, puedes mantenerte informado.
+
+LECTURA FÁCIL CORRECTA:
+Atención presencial.
+Te informamos sobre las oficinas de información y atención a la ciudadanía.
+
+Atención telefónica.
+Te informamos sobre los teléfonos de atención de las Administraciones Públicas.
+
+Atención a través de la web.
+Te informamos sobre páginas web públicas.
+Muchas páginas web tienen buzones de atención.
+
+Redes sociales.
+Te informamos sobre redes sociales de las administraciones públicas.
+Muchas responden a tus consultas.
+También puedes usarlas para mantenerte informado.
+
+=== TEXTO A ADAPTAR ===
+
+Título: {title}
+
+{text}

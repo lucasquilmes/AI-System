@@ -40,7 +40,7 @@ def safe_name(s: str) -> str:
 def build_llm(provider: str, model_name: str, model_cfg: dict, creds: dict):
     """
     Build LLM instance for different providers.
-    
+
     Providers: ollama / openai / anthropic / google
     """
     if provider == "ollama":
@@ -169,7 +169,7 @@ def process_excel(
     if not task_cfg:
         raise ValueError(f"Task '{task_name}' not found in GENERAL_REGISTRY (config/general_registry.py).")
 
-    chain, provider, model_cfg = build_chain(task_cfg, model_key, creds)
+    chain, provider, _ = build_chain(task_cfg, model_key, creds)
 
     # Read Excel
     print(f"Reading Excel: {excel_path}")
@@ -197,8 +197,9 @@ def process_excel(
 
     print(f"Processing rows {from_row} to {to_row-1} (total: {total_rows})")
 
-    # Output paths
-    output_dir = Path(f"outputs/{safe_name(task_name)}/{safe_name(model_key)}")
+    # Output paths — organized by dataset
+    dataset_name = safe_name(excel_path.stem.lower())
+    output_dir = Path(f"outputs/{dataset_name}/{safe_name(task_name)}/{safe_name(model_key)}")
     output_jsonl = output_dir / "results.jsonl"
 
     # Initialize results list for Excel output
@@ -375,6 +376,18 @@ def main():
         default=None,
         help="Output prefix (default: task name)"
     )
+    parser.add_argument(
+        "--temperature",
+        type=float,
+        default=None,
+        help="Override model temperature (e.g. 0.3, 0.7, 1.0). Adds _t{T}_s{seed} suffix to output path."
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=None,
+        help="Override random seed. Adds _t{T}_s{seed} suffix to output path."
+    )
 
     args = parser.parse_args()
 
@@ -399,6 +412,8 @@ def main():
         id_col=args.id_col,
         from_row=args.from_row,
         to_row=args.to_row,
+        temperature=args.temperature,
+        seed=args.seed,
     )
 
 

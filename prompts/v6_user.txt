@@ -1,0 +1,45 @@
+A continuación tienes 2 ejemplos reales que muestran cómo transformar cada frase individualmente siguiendo el pipeline de simplificación.
+
+=== EJEMPLO 1 ===
+
+TEXTO ORIGINAL:
+Ponemos a tu disposición un buscador. Puedes suscribirte a nuestro boletín quincenal, recibir avisos personalizados en tu correo electrónico o descargarte nuestra app de ayudas económicas, subvenciones, becas y premios.
+
+TRANSFORMACIÓN FRASE A FRASE:
+"Ponemos a tu disposición un buscador" → Te ofrecemos un buscador de ayudas.
+"Puedes suscribirte a nuestro boletín quincenal" → Puedes suscribirte a nuestro boletín. / El boletín se publica cada 15 días.
+"recibir avisos personalizados en tu correo electrónico" → Te enviamos avisos a tu correo.
+"descargarte nuestra app de ayudas económicas, subvenciones, becas y premios" → Puedes descargarte nuestra aplicación de ayudas.
+
+LECTURA FÁCIL CORRECTA:
+Te ofrecemos un buscador de ayudas, subvenciones, becas y premios.
+
+Puedes suscribirte a nuestro boletín de ayudas, subvenciones, becas y premios.
+El boletín se publica cada 15 días.
+
+Si quieres, te enviamos avisos personalizados a tu correo electrónico.
+
+Además, puedes descargarte en tu móvil nuestra aplicación de ayudas, subvenciones, becas y premios.
+
+=== EJEMPLO 2 ===
+
+TEXTO ORIGINAL:
+Te ofrecemos atención y orientación a través de diferentes canales de atención: Atención presencial: te informamos sobre las oficinas de información y atención a la ciudadanía de las que dispones. Atención telefónica: te informamos sobre los teléfonos de atención general en las distintas Administraciones Públicas.
+
+TRANSFORMACIÓN FRASE A FRASE:
+"Te ofrecemos atención y orientación a través de diferentes canales" → [se elimina como introducción redundante]
+"Atención presencial: te informamos sobre las oficinas..." → Atención presencial. / Te informamos sobre las oficinas de atención.
+"Atención telefónica: te informamos sobre los teléfonos..." → Atención telefónica. / Te informamos sobre los teléfonos de atención.
+
+LECTURA FÁCIL CORRECTA:
+Atención presencial.
+Te informamos sobre las oficinas de información y atención a la ciudadanía.
+
+Atención telefónica.
+Te informamos sobre los teléfonos de atención de las Administraciones Públicas.
+
+=== TEXTO A ADAPTAR ===
+
+Título: {title}
+
+{text}
