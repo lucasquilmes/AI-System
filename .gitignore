@@ -35,6 +35,7 @@ outputs/
 plots/test_poor/
 plots/exemples_lectura_facil_formatted/
 plots/combined/
+plots/fase2/
 
 # ── Datos sensibles / ficheros grandes ────────────────────────────────────────
 data/*.xlsx

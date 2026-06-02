@@ -33,7 +33,7 @@ def get_config():
 
     data_dir   = outputs / dataset_name / "general"
     output_dir = plots_dir / dataset_name
-    output_dir.mkdir(exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
     return data_dir, output_dir
 
 

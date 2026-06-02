@@ -20,7 +20,7 @@ import re
 from pathlib import Path
 
 ROOT     = Path(__file__).parent.parent.parent
-OUTPUTS  = ROOT / "outputs"
+OUTPUTS  = ROOT / "outputs" / "fase2"
 EVAL_CLI = ROOT / "evaluation" / "evaluate_excel.py"
 
 PROMPTS  = ["v8", "cot"]
@@ -61,7 +61,7 @@ def run_evaluation(dataset_name: str, version: str, skip_bert: bool, dry_run: bo
     cmd = [
         sys.executable, str(EVAL_CLI),
         "--version", version,
-        "--dataset", dataset_name,
+        "--dataset", f"fase2/{dataset_name}",
     ]
     if skip_bert:
         cmd.append("--skip-bert")

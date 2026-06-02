@@ -39,6 +39,8 @@ COMBINED_PLOTS = [
     "combined_ranking_prompts.py",
 ]
 
+FASE2A_SCRIPT = PLOTS_DIR / "fase2" / "compare_temperatures.py"
+
 
 def run_script(script_path: Path, extra_args: list[str]) -> bool:
     cmd = [sys.executable, str(script_path)] + extra_args
@@ -59,11 +61,28 @@ def get_datasets(dataset_filter: str | None) -> list[str]:
     ])
 
 
+def get_fase2a_bases() -> list[str]:
+    """Detecta los nombres base únicos en outputs/fase2/ (sin _t* ni _s*)."""
+    import re
+    fase2 = OUTPUTS / "fase2"
+    if not fase2.exists():
+        return []
+    pattern = re.compile(r"^(.+)_t[\d.]+_s\d+$")
+    bases = set()
+    for d in fase2.iterdir():
+        if not d.is_dir():
+            continue
+        m = pattern.match(d.name)
+        if m and (d / "general").exists():
+            bases.add(m.group(1))
+    return sorted(bases)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Regenera los gráficos del proyecto")
     parser.add_argument(
         "--scope",
-        choices=["per_dataset", "combined", "all"],
+        choices=["per_dataset", "combined", "fase2a", "all"],
         default="all",
         help="Qué conjunto de gráficos regenerar (default: all)"
     )
@@ -90,9 +109,11 @@ if __name__ == "__main__":
             sys.exit(1)
         per_dataset_run = [s for s in requested if s in PER_DATASET_PLOTS]
         combined_run    = [s for s in requested if s in COMBINED_PLOTS]
+        fase2a_run      = False
     else:
         per_dataset_run = PER_DATASET_PLOTS if args.scope in ("per_dataset", "all") else []
         combined_run    = COMBINED_PLOTS    if args.scope in ("combined",    "all") else []
+        fase2a_run      = args.scope in ("fase2a", "all")
 
     datasets = get_datasets(args.dataset)
     if not datasets and per_dataset_run:
@@ -128,6 +149,22 @@ if __name__ == "__main__":
             ok = run_script(path, [])
             if not ok:
                 failed.append(f"combined/{script}")
+
+    # --- Fase 2A comparison plots ---
+    if fase2a_run:
+        bases = get_fase2a_bases()
+        if not bases:
+            print("\nNo se encontraron datasets de Fase 2A evaluados en outputs/fase2/")
+        else:
+            print(f"\n{'='*55}")
+            print("Fase 2A — comparativa de temperaturas")
+            print(f"{'='*55}")
+            for base in bases:
+                print(f"\n  Base: {base}")
+                total += 1
+                ok = run_script(FASE2A_SCRIPT, ["--base", base])
+                if not ok:
+                    failed.append(f"fase2a/{base}")
 
     print(f"\n{'='*55}")
     if failed:

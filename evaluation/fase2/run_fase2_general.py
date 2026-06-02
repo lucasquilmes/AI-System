@@ -136,10 +136,10 @@ def process_excel(excel_path: Path, sheet_name: str, task_name: str,
     total_rows = len(df)
     to_row     = min(to_row if to_row is not None else total_rows, total_rows)
 
-    # Output path: outputs/<dataset>_t<T>_s<seed>/<task>/<model>/
+    # Output path: outputs/fase2/<dataset>_t<T>_s<seed>/<task>/<model>/
     dataset_name = safe_name(excel_path.stem.lower())
     variant_name = f"{dataset_name}_t{temperature}_s{seed}"
-    output_dir   = ROOT / "outputs" / variant_name / safe_name(task_name) / safe_name(model_key)
+    output_dir   = ROOT / "outputs" / "fase2" / variant_name / safe_name(task_name) / safe_name(model_key)
     output_jsonl = output_dir / "results.jsonl"
 
     print(f"Output → {output_dir}")
