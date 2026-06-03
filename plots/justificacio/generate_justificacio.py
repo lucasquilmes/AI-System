@@ -1,17 +1,6 @@
-﻿"""
-Genera els grÃ fics de justificaciÃ³ de decisions per Fase 1 i Fase 2A.
+"""
+Genera els grafics de justificacio de decisions per Fase 1 i Fase 2A.
 Sortida: plots/justificacio/
-  Fase 1:
-    j1_score_per_model.png       â€” Score compost per model (global + per dataset)
-    j2_score_per_prompt.png      â€” Score compost per prompt (ordenat)
-    j3_heatmap_model_prompt.png  â€” Heatmap model Ã— prompt (score global)
-    j4_model_per_dataset.png     â€” Barres agrupades model Ã— dataset
-    j5_scatter_sari_lev.png      â€” Scatter SARI vs Levenshtein (tots els outputs)
-    j6_gap_cross_dataset.png     â€” Gap inter-dataset top-15 combinacions
-  Fase 2A:
-    j7_score_vs_temp.png         â€” Score vs temperatura (llama3.3 i gemma2:27b)
-    j8_gap_per_temperatura.png   â€” Gap inter-dataset per temperatura (llama3.3+V8)
-    j9_v8_cot_inversion.png      â€” InversiÃ³ V8/CoT entre datasets
 """
 import pandas as pd
 import numpy as np
@@ -36,24 +25,24 @@ METRICS = {
 }
 
 MODEL_LABELS = {
-    "llama3.3":       "llama3.3\n(70B)",
-    "gemma2_27b":     "gemma2\n(27B)",
-    "aya-expanse_32b":"aya-expanse\n(32B)",
-    "qwen2.5_32b":    "qwen2.5\n(32B)",
-    "mistral-nemo":   "mistral-nemo\n(12B)",
-    "llama3.1_8b":    "llama3.1\n(8B)",
-    "command-r":      "command-r\n(35B)",
-    "mixtral":        "mixtral\n(47B)",
+    "llama3.3":        "llama3.3\n(70B)",
+    "gemma2_27b":      "gemma2\n(27B)",
+    "aya-expanse_32b": "aya-expanse\n(32B)",
+    "qwen2.5_32b":     "qwen2.5\n(32B)",
+    "mistral-nemo":    "mistral-nemo\n(12B)",
+    "llama3.1_8b":     "llama3.1\n(8B)",
+    "command-r":       "command-r\n(35B)",
+    "mixtral":         "mixtral\n(47B)",
 }
 MODEL_ORDER = ["llama3.3","gemma2_27b","aya-expanse_32b","qwen2.5_32b",
                "mistral-nemo","llama3.1_8b","command-r","mixtral"]
 
 DS_SHORT = {
-    "test_poor":                         "PAGE_DS",
-    "exemples_lectura_facil_formatted":  "exemples",
+    "test_poor":                        "PAGE_DS",
+    "exemples_lectura_facil_formatted": "exemples",
 }
 
-# â”€â”€ CÃ rrega de dades â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
 def load_fase1():
     frames = []
     for ds in ["test_poor", "exemples_lectura_facil_formatted"]:
@@ -121,15 +110,13 @@ def load_fase2():
     return all_df
 
 
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-# J1 â€” Score per model (global + per dataset)
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 def plot_j1(df):
     fig, axes = plt.subplots(1, 3, figsize=(16, 5), sharey=True)
     colors_ds = {"PAGE_DS": "#2196F3", "exemples": "#FF9800"}
-
-    for ax, (label, sub) in zip(axes[:2], [("PAGE_DS", df[df.dataset=="PAGE_DS"]),
-                                             ("exemples",   df[df.dataset=="exemples"])]):
+    for ax, (label, sub) in zip(axes[:2], [
+        ("PAGE_DS", df[df.dataset == "PAGE_DS"]),
+        ("exemples", df[df.dataset == "exemples"]),
+    ]):
         means = sub.groupby("modelo")["score"].mean().reindex(MODEL_ORDER)
         bars  = ax.barh([MODEL_LABELS.get(m, m) for m in MODEL_ORDER],
                         means.values, color=colors_ds[label], edgecolor="white", height=0.6)
@@ -137,12 +124,10 @@ def plot_j1(df):
             ax.text(bar.get_width()+0.003, bar.get_y()+bar.get_height()/2,
                     f"{v:.3f}", va="center", fontsize=9)
         ax.set_title(f"Dataset: {label}", fontsize=11, fontweight="bold")
-        ax.set_xlabel("Score compost [0â€“1]", fontsize=9)
+        ax.set_xlabel("Score compost [0-1]", fontsize=9)
         ax.set_xlim(0, 1.0)
         ax.axvline(0.70, color="grey", linestyle="--", alpha=0.4, linewidth=1)
         ax.grid(axis="x", alpha=0.3)
-
-    # Global
     ax = axes[2]
     means_g = df.groupby("modelo")["score"].mean().reindex(MODEL_ORDER)
     palette = ["#00467F" if m in ["llama3.3","gemma2_27b"] else "#90CAF9" for m in MODEL_ORDER]
@@ -152,12 +137,11 @@ def plot_j1(df):
         ax.text(bar.get_width()+0.003, bar.get_y()+bar.get_height()/2,
                 f"{v:.3f}", va="center", fontsize=9, fontweight="bold")
     ax.set_title("Global (tots 2 datasets)", fontsize=11, fontweight="bold")
-    ax.set_xlabel("Score compost [0â€“1]", fontsize=9)
+    ax.set_xlabel("Score compost [0-1]", fontsize=9)
     ax.set_xlim(0, 1.0)
     ax.axvline(0.70, color="grey", linestyle="--", alpha=0.4, linewidth=1)
     ax.grid(axis="x", alpha=0.3)
-
-    fig.suptitle("Score compost per model â€” JustificaciÃ³ selecciÃ³ llama3.3 i gemma2:27b",
+    fig.suptitle("Score compost per model - Comparativa entre datasets",
                  fontsize=13, fontweight="bold")
     plt.tight_layout()
     out = OUT_DIR / "j1_score_per_model.png"
@@ -166,41 +150,32 @@ def plot_j1(df):
     plt.close()
 
 
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-# J2 â€” Score per prompt (ordenat, colorejat per grup)
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 def plot_j2(df):
     GROUPS = {
-        "V0":"VersiÃ³ prÃ²pia","V1":"VersiÃ³ prÃ²pia","V2":"VersiÃ³ prÃ²pia",
-        "V3":"VersiÃ³ prÃ²pia","V4":"VersiÃ³ prÃ²pia","V5":"VersiÃ³ prÃ²pia",
-        "V6":"VersiÃ³ prÃ²pia","V7":"VersiÃ³ prÃ²pia","V8":"VersiÃ³ prÃ²pia",
-        "ZERO_SHOT":"EstÃ ndard","ZS_COT":"EstÃ ndard","FEW_SHOT":"EstÃ ndard",
-        "ROLE":"EstÃ ndard","COT":"EstÃ ndard","TOT":"EstÃ ndard",
-        "SELF_CONS":"EstÃ ndard","SELF_REF":"EstÃ ndard","ENSEMBLE":"EstÃ ndard",
-        "META":"EstÃ ndard",
-        "MOTOR":"Domini","AUDIT":"Domini",
+        "V0":"Versio propia","V1":"Versio propia","V2":"Versio propia",
+        "V3":"Versio propia","V4":"Versio propia","V5":"Versio propia",
+        "V6":"Versio propia","V7":"Versio propia","V8":"Versio propia",
+        "ZERO_SHOT":"Estandard","ZS_COT":"Estandard","FEW_SHOT":"Estandard",
+        "ROLE":"Estandard","COT":"Estandard","TOT":"Estandard",
+        "SELF_CONS":"Estandard","SELF_REF":"Estandard","ENSEMBLE":"Estandard",
+        "META":"Estandard","MOTOR":"Domini","AUDIT":"Domini",
     }
-    GROUP_COLORS = {"VersiÃ³ prÃ²pia":"#00467F","EstÃ ndard":"#4CAF50","Domini":"#FF9800"}
-
-    means = df.groupby("prompt")["score"].mean().sort_values(ascending=True)
-    colors = [GROUP_COLORS.get(GROUPS.get(p,"EstÃ ndard"),"grey") for p in means.index]
-
+    GROUP_COLORS = {"Versio propia":"#00467F","Estandard":"#4CAF50","Domini":"#FF9800"}
+    means  = df.groupby("prompt")["score"].mean().sort_values(ascending=True)
+    colors = [GROUP_COLORS.get(GROUPS.get(p,"Estandard"),"grey") for p in means.index]
     fig, ax = plt.subplots(figsize=(9, 8))
     bars = ax.barh(means.index, means.values, color=colors, edgecolor="white", height=0.7)
     for bar, v in zip(bars, means.values):
         ax.text(bar.get_width()+0.003, bar.get_y()+bar.get_height()/2,
                 f"{v:.3f}", va="center", fontsize=8.5)
-    ax.set_xlabel("Score compost mitjÃ  [0â€“1]", fontsize=10)
-    ax.set_title("Score compost per tÃ¨cnica de prompting\nJustificaciÃ³ selecciÃ³ V8 i CoT",
-                 fontsize=12, fontweight="bold")
+    ax.set_xlabel("Score compost mitja [0-1]", fontsize=10)
+    ax.set_title("Score compost per tecnica de prompting", fontsize=12, fontweight="bold")
     ax.set_xlim(0, 1.0)
     ax.axvline(0.70, color="grey", linestyle="--", alpha=0.4, linewidth=1)
     ax.grid(axis="x", alpha=0.3)
-
     from matplotlib.patches import Patch
     legend = [Patch(color=c, label=l) for l, c in GROUP_COLORS.items()]
     ax.legend(handles=legend, loc="lower right", fontsize=9)
-
     plt.tight_layout()
     out = OUT_DIR / "j2_score_per_prompt.png"
     plt.savefig(out, dpi=150, bbox_inches="tight")
@@ -208,35 +183,26 @@ def plot_j2(df):
     plt.close()
 
 
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-# J3 â€” Heatmap model Ã— prompt (score global)
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 def plot_j3(df):
     pivot = df.groupby(["modelo","prompt"])["score"].mean().unstack()
     pivot = pivot.reindex(MODEL_ORDER)
-
     prompt_order = df.groupby("prompt")["score"].mean().sort_values(ascending=False).index.tolist()
     pivot = pivot[prompt_order]
-
     cmap = mcolors.LinearSegmentedColormap.from_list("rg", ["#e74c3c","#f9f9a0","#2ecc71"])
     fig, ax = plt.subplots(figsize=(18, 5))
     im = ax.imshow(pivot.values, cmap=cmap, vmin=0.3, vmax=0.95, aspect="auto")
-
     ax.set_xticks(range(len(pivot.columns)))
     ax.set_xticklabels(pivot.columns, rotation=45, ha="right", fontsize=9)
     ax.set_yticks(range(len(pivot.index)))
     ax.set_yticklabels([MODEL_LABELS.get(m, m).replace("\n"," ") for m in pivot.index], fontsize=9)
-
     for i in range(len(pivot.index)):
         for j in range(len(pivot.columns)):
             val = pivot.iloc[i, j]
             if pd.isna(val): continue
             col = "black" if 0.4 < val < 0.85 else "white"
             ax.text(j, i, f"{val:.3f}", ha="center", va="center", fontsize=7.5, color=col)
-
-    plt.colorbar(im, ax=ax, fraction=0.02, label="Score compost [0â€“1]")
-    ax.set_title("Heatmap score compost â€” Model Ã— Prompt (global, 2 datasets)\n"
-                 "JustificaciÃ³: les combinacions llama3.3/gemma2 Ã— V8/V3/V4 dominen",
+    plt.colorbar(im, ax=ax, fraction=0.02, label="Score compost [0-1]")
+    ax.set_title("Heatmap score compost - Model x Prompt (2 datasets)",
                  fontsize=11, fontweight="bold")
     plt.tight_layout()
     out = OUT_DIR / "j3_heatmap_model_prompt.png"
@@ -245,40 +211,28 @@ def plot_j3(df):
     plt.close()
 
 
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-# J4 â€” Barres agrupades model Ã— dataset
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 def plot_j4(df):
     means = df.groupby(["modelo","dataset"])["score"].mean().unstack()
     means = means.reindex(MODEL_ORDER)
-    x = np.arange(len(MODEL_ORDER))
-    w = 0.35
-
+    x, w = np.arange(len(MODEL_ORDER)), 0.35
     fig, ax = plt.subplots(figsize=(12, 5))
-    b1 = ax.bar(x - w/2, means["PAGE_DS"].values,  w, label="PAGE_DS",
+    b1 = ax.bar(x - w/2, means["PAGE_DS"].values, w, label="PAGE_DS",
                 color="#2196F3", edgecolor="white")
-    b2 = ax.bar(x + w/2, means["exemples"].values,   w, label="exemples",
+    b2 = ax.bar(x + w/2, means["exemples"].values, w, label="exemples",
                 color="#FF9800", edgecolor="white")
-
     for bar in list(b1) + list(b2):
         ax.text(bar.get_x()+bar.get_width()/2, bar.get_height()+0.005,
                 f"{bar.get_height():.3f}", ha="center", va="bottom", fontsize=8)
-
     ax.set_xticks(x)
     ax.set_xticklabels([MODEL_LABELS.get(m,m).replace("\n"," ") for m in MODEL_ORDER], fontsize=9)
-    ax.set_ylabel("Score compost [0â€“1]", fontsize=10)
+    ax.set_ylabel("Score compost [0-1]", fontsize=10)
     ax.set_ylim(0, 0.88)
-    ax.set_title("Score compost per model i dataset\n"
-                 "JustificaciÃ³: llama3.3 i gemma2:27b top-2 en TOTS DOS datasets",
-                 fontsize=12, fontweight="bold")
+    ax.set_title("Score compost per model i dataset", fontsize=12, fontweight="bold")
     ax.legend(fontsize=10)
     ax.grid(axis="y", alpha=0.3)
     ax.axhline(0.68, color="grey", linestyle="--", alpha=0.4, linewidth=1)
-
-    # Highlight top-2
     for xi in [0, 1]:
         ax.axvspan(xi - 0.5, xi + 0.5, alpha=0.06, color="#00467F")
-
     plt.tight_layout()
     out = OUT_DIR / "j4_model_per_dataset.png"
     plt.savefig(out, dpi=150, bbox_inches="tight")
@@ -286,14 +240,8 @@ def plot_j4(df):
     plt.close()
 
 
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-# J5 â€” Scatter SARI vs Levenshtein
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 def plot_j5(df):
     highlight = {"llama3.3","gemma2_27b"}
-    colors = df["modelo"].apply(lambda m: "#00467F" if m in highlight else "#BBBBBB")
-    sizes  = df["modelo"].apply(lambda m: 60 if m in highlight else 25)
-
     fig, axes = plt.subplots(1, 2, figsize=(13, 5))
     for ax, ds in zip(axes, ["PAGE_DS","exemples"]):
         sub = df[df["dataset"]==ds]
@@ -301,24 +249,22 @@ def plot_j5(df):
         s   = sub["modelo"].apply(lambda m: 60 if m in highlight else 25)
         ax.scatter(sub["sari_score_promedio"], sub["levenshtein_similarity_promedio"],
                    c=c, s=s, alpha=0.7, edgecolors="white", linewidth=0.5)
-
-        # annotate top combinations
         top = sub.nlargest(5, "score")
         for _, row in top.iterrows():
             ax.annotate(f"{row.modelo.split('_')[0][:6]}+{row.prompt}",
                         (row["sari_score_promedio"], row["levenshtein_similarity_promedio"]),
                         textcoords="offset points", xytext=(5, 3), fontsize=7, color="#00467F")
-
         ax.set_xlabel("SARI", fontsize=10)
         ax.set_ylabel("Levenshtein similarity", fontsize=10)
         ax.set_title(f"Dataset: {ds}", fontsize=11, fontweight="bold")
         ax.grid(alpha=0.3)
-
     from matplotlib.lines import Line2D
-    legend = [Line2D([0],[0],marker="o",color="w",markerfacecolor="#00467F",markersize=8,label="llama3.3 / gemma2"),
-              Line2D([0],[0],marker="o",color="w",markerfacecolor="#BBBBBB",markersize=6,label="Altres models")]
+    legend = [
+        Line2D([0],[0],marker="o",color="w",markerfacecolor="#00467F",markersize=8,label="llama3.3 / gemma2"),
+        Line2D([0],[0],marker="o",color="w",markerfacecolor="#BBBBBB",markersize=6,label="Altres models"),
+    ]
     fig.legend(handles=legend, loc="lower center", ncol=2, fontsize=9, bbox_to_anchor=(0.5,-0.02))
-    fig.suptitle("Scatter SARI vs Levenshtein â€” Poder discriminatiu de les mÃ¨triques principals",
+    fig.suptitle("Relacio entre SARI i similitud de Levenshtein per model i dataset",
                  fontsize=12, fontweight="bold")
     plt.tight_layout()
     out = OUT_DIR / "j5_scatter_sari_lev.png"
@@ -327,9 +273,6 @@ def plot_j5(df):
     plt.close()
 
 
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-# J6 â€” Gap inter-dataset top-15
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 def plot_j6(df):
     tp = df[df.dataset=="PAGE_DS"].groupby(["modelo","prompt"])["score"].mean()
     ex = df[df.dataset=="exemples"].groupby(["modelo","prompt"])["score"].mean()
@@ -337,36 +280,28 @@ def plot_j6(df):
     gap_df["mean"] = gap_df.mean(axis=1)
     gap_df["gap"]  = (gap_df["PAGE_DS"] - gap_df["exemples"]).abs()
     gap_df = gap_df.sort_values("mean", ascending=False).head(15)
-
     labels = [f"{m.split('_')[0][:7]}+{p}" for (m,p) in gap_df.index]
-    x = np.arange(len(labels))
-    w = 0.32
-
+    x, w = np.arange(len(labels)), 0.32
     fig, ax = plt.subplots(figsize=(14, 5))
     b1 = ax.bar(x - w, gap_df["PAGE_DS"].values, w, label="PAGE_DS",  color="#2196F3", edgecolor="white")
-    b2 = ax.bar(x,     gap_df["exemples"].values,   w, label="exemples",   color="#FF9800", edgecolor="white")
-    b3 = ax.bar(x + w, gap_df["gap"].values,        w, label="Gap (|Î”|)",  color="#E91E63", alpha=0.8, edgecolor="white")
-
+    b2 = ax.bar(x,     gap_df["exemples"].values, w, label="exemples", color="#FF9800", edgecolor="white")
+    b3 = ax.bar(x + w, gap_df["gap"].values,      w, label="Gap (|d|)",color="#E91E63", alpha=0.8, edgecolor="white")
     for b in list(b1)+list(b2)+list(b3):
         ax.text(b.get_x()+b.get_width()/2, b.get_height()+0.005,
                 f"{b.get_height():.3f}", ha="center", va="bottom", fontsize=7)
-
     ax.set_xticks(x)
     ax.set_xticklabels(labels, rotation=40, ha="right", fontsize=8)
-    ax.set_ylabel("Score compost [0â€“1]", fontsize=10)
+    ax.set_ylabel("Score compost [0-1]", fontsize=10)
     ax.set_ylim(0, 1.05)
-    ax.set_title("Top-15 combinacions: score per dataset i gap inter-dataset\n"
-                 "JustificaciÃ³ criteri robustesa: gap baix = millor generalitzaciÃ³",
+    ax.set_title("Score i gap inter-dataset - Top-15 configuracions per score mitja",
                  fontsize=12, fontweight="bold")
     ax.legend(fontsize=9)
     ax.grid(axis="y", alpha=0.3)
-
-    # highlight recommended (llama3.3 V8)
     for i, (m,p) in enumerate(gap_df.index):
         if m == "llama3.3" and p == "V8":
             ax.axvspan(i-0.5, i+0.5, alpha=0.1, color="#00467F")
-            ax.text(i, 1.01, "â˜… Recomanat", ha="center", fontsize=8, color="#00467F", fontweight="bold")
-
+            ax.text(i, 1.01, "* Recomanat", ha="center", fontsize=8,
+                    color="#00467F", fontweight="bold")
     plt.tight_layout()
     out = OUT_DIR / "j6_gap_cross_dataset.png"
     plt.savefig(out, dpi=150, bbox_inches="tight")
@@ -374,22 +309,17 @@ def plot_j6(df):
     plt.close()
 
 
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-# J7 â€” Score vs temperatura (Fase 2A)
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 def plot_j7(df2):
     if df2.empty:
-        print("  ! j7: dades Fase 2A no disponibles")
-        return
-    temps = sorted(df2["temperature"].unique())
-    fig, axes = plt.subplots(1, 2, figsize=(13, 5), sharey=True)
+        print("  ! j7: dades Fase 2A no disponibles"); return
+    temps  = sorted(df2["temperature"].unique())
     styles = {"llama3.3":{"color":"#00467F","marker":"o"},
               "gemma2_27b":{"color":"#FF9800","marker":"s"}}
-
+    fig, axes = plt.subplots(1, 2, figsize=(13, 5), sharey=True)
     for ax, ds in zip(axes, ["PAGE_DS","exemples"]):
         sub = df2[df2["dataset"]==ds]
         for model, style in styles.items():
-            msub = sub[sub["modelo"]==model]
+            msub   = sub[sub["modelo"]==model]
             mean_t = msub.groupby("temperature")["score"].mean().reindex(temps)
             ax.plot(temps, mean_t.values, marker=style["marker"], linewidth=2.5,
                     color=style["color"], label=model, markersize=7)
@@ -403,8 +333,8 @@ def plot_j7(df2):
         ax.set_ylim(0, 0.85)
         ax.legend(fontsize=9)
         ax.grid(alpha=0.3)
-    axes[0].set_ylabel("Score compost [0â€“1]", fontsize=10)
-    fig.suptitle("Score compost vs Temperatura â€” Fase 2A\nJustificaciÃ³: T=0.0 Ã©s Ã²ptim en tots dos datasets",
+    axes[0].set_ylabel("Score compost [0-1]", fontsize=10)
+    fig.suptitle("Evolucio del score compost per temperatura - Fase 2A",
                  fontsize=12, fontweight="bold")
     plt.tight_layout()
     out = OUT_DIR / "j7_score_vs_temp.png"
@@ -413,27 +343,21 @@ def plot_j7(df2):
     plt.close()
 
 
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-# J8 â€” Gap inter-dataset per temperatura (llama3.3 + V8)
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 def plot_j8(df2):
     if df2.empty:
-        print("  ! j8: dades Fase 2A no disponibles")
-        return
-    sub = df2[(df2["modelo"]=="llama3.3") & (df2["version"]=="V8")]
-    tp  = sub[sub["dataset"]=="PAGE_DS"].set_index("temperature")["score"]
-    ex  = sub[sub["dataset"]=="exemples"].set_index("temperature")["score"]
+        print("  ! j8: dades Fase 2A no disponibles"); return
+    sub   = df2[(df2["modelo"]=="llama3.3") & (df2["version"]=="V8")]
+    tp    = sub[sub["dataset"]=="PAGE_DS"].set_index("temperature")["score"]
+    ex    = sub[sub["dataset"]=="exemples"].set_index("temperature")["score"]
     temps = sorted(sub["temperature"].unique())
-    tp_v = [tp.get(t, np.nan) for t in temps]
-    ex_v = [ex.get(t, np.nan) for t in temps]
-    gap_v = [abs(a-b) if not (np.isnan(a) or np.isnan(b)) else np.nan for a,b in zip(tp_v, ex_v)]
-
-    x = np.arange(len(temps))
-    w = 0.28
+    tp_v  = [tp.get(t, np.nan) for t in temps]
+    ex_v  = [ex.get(t, np.nan) for t in temps]
+    gap_v = [abs(a-b) if not (np.isnan(a) or np.isnan(b)) else np.nan for a,b in zip(tp_v,ex_v)]
+    x, w  = np.arange(len(temps)), 0.28
     fig, ax = plt.subplots(figsize=(8, 5))
     b1 = ax.bar(x-w, tp_v,  w, label="PAGE_DS", color="#2196F3", edgecolor="white")
-    b2 = ax.bar(x,   ex_v,  w, label="exemples",  color="#FF9800", edgecolor="white")
-    b3 = ax.bar(x+w, gap_v, w, label="Gap",       color="#E91E63", alpha=0.8, edgecolor="white")
+    b2 = ax.bar(x,   ex_v,  w, label="exemples",color="#FF9800", edgecolor="white")
+    b3 = ax.bar(x+w, gap_v, w, label="Gap",     color="#E91E63", alpha=0.8, edgecolor="white")
     for bars in [b1, b2, b3]:
         for b in bars:
             if b.get_height() > 0:
@@ -441,10 +365,9 @@ def plot_j8(df2):
                         f"{b.get_height():.3f}", ha="center", va="bottom", fontsize=8.5)
     ax.set_xticks(x)
     ax.set_xticklabels([f"T={t}" for t in temps], fontsize=10)
-    ax.set_ylabel("Score compost [0â€“1]", fontsize=10)
+    ax.set_ylabel("Score compost [0-1]", fontsize=10)
     ax.set_ylim(0, 0.88)
-    ax.set_title("llama3.3 + V8 â€” Score i gap per temperatura\n"
-                 "JustificaciÃ³: T alta amplifica especialitzaciÃ³ de domini",
+    ax.set_title("Score i gap inter-dataset per temperatura - llama3.3 + V8",
                  fontsize=12, fontweight="bold")
     ax.legend(fontsize=9)
     ax.grid(axis="y", alpha=0.3)
@@ -455,28 +378,20 @@ def plot_j8(df2):
     plt.close()
 
 
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-# J9 â€” InversiÃ³ V8 / CoT entre datasets
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 def plot_j9(df2):
     if df2.empty:
-        print("  ! j9: dades Fase 2A no disponibles")
-        return
-    sub = df2[(df2["modelo"]=="llama3.3") & (df2["temperature"]==0.0)]
+        print("  ! j9: dades Fase 2A no disponibles"); return
+    sub  = df2[(df2["modelo"]=="llama3.3") & (df2["temperature"]==0.0)]
     data = {}
     for ds in ["PAGE_DS","exemples"]:
         for v in ["V8","COT"]:
             r = sub[(sub["dataset"]==ds) & (sub["version"]==v)]
             data[(ds,v)] = r["score"].mean() if len(r) else np.nan
-
-    datasets = ["PAGE_DS", "exemples"]
-    prompts  = ["V8","COT"]
-    x = np.arange(len(datasets))
-    w = 0.35
+    datasets = ["PAGE_DS","exemples"]
+    x, w = np.arange(len(datasets)), 0.35
     colors_p = {"V8":"#00467F","COT":"#4CAF50"}
-
     fig, ax = plt.subplots(figsize=(7, 5))
-    for i, prompt in enumerate(prompts):
+    for i, prompt in enumerate(["V8","COT"]):
         vals = [data[(ds,prompt)] for ds in datasets]
         bars = ax.bar(x + (i-0.5)*w, vals, w, label=prompt,
                       color=colors_p[prompt], edgecolor="white")
@@ -484,18 +399,14 @@ def plot_j9(df2):
             if not np.isnan(v):
                 ax.text(b.get_x()+b.get_width()/2, b.get_height()+0.005,
                         f"{v:.3f}", ha="center", va="bottom", fontsize=10, fontweight="bold")
-
     ax.set_xticks(x)
     ax.set_xticklabels(datasets, fontsize=11)
-    ax.set_ylabel("Score compost [0â€“1]", fontsize=10)
+    ax.set_ylabel("Score compost [0-1]", fontsize=10)
     ax.set_ylim(0, 0.78)
-    ax.set_title("llama3.3 + T=0.0 â€” V8 vs CoT per dataset\n"
-                 "JustificaciÃ³ inversiÃ³: V8 â†’ admin; CoT â†’ multi-domini",
+    ax.set_title("Comparativa V8 vs. CoT per dataset - llama3.3, T=0.0",
                  fontsize=12, fontweight="bold")
     ax.legend(fontsize=10)
     ax.grid(axis="y", alpha=0.3)
-
-    # annotation arrows
     ax.annotate("V8 guanya\n+22pp", xy=(0+0.5*w-w*0.5, data[("PAGE_DS","V8")]),
                 xytext=(0.35, data[("PAGE_DS","V8")]+0.06),
                 arrowprops=dict(arrowstyle="->", color="#00467F"),
@@ -504,7 +415,6 @@ def plot_j9(df2):
                 xytext=(1.25, data[("exemples","COT")]+0.06),
                 arrowprops=dict(arrowstyle="->", color="#4CAF50"),
                 fontsize=9, color="#4CAF50", fontweight="bold")
-
     plt.tight_layout()
     out = OUT_DIR / "j9_v8_cot_inversion.png"
     plt.savefig(out, dpi=150, bbox_inches="tight")
@@ -512,9 +422,7 @@ def plot_j9(df2):
     plt.close()
 
 
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-# MAIN
-# â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+# == MAIN ======================================================================
 print("Carregant dades Fase 1...")
 df1 = load_fase1()
 print(f"  {len(df1)} files carregades")
@@ -537,5 +445,10 @@ plot_j7(df2)
 plot_j8(df2)
 plot_j9(df2)
 
-print(f"\nTots els grÃ fics guardats a: {OUT_DIR}")
+print(f"\nFet. Grafics a: {OUT_DIR}")
 
+# cleanup
+import os, pathlib
+fix = pathlib.Path("_fix_titles.py")
+if fix.exists():
+    os.remove(fix)
