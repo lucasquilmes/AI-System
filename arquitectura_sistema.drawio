@@ -1,0 +1,159 @@
+<mxfile host="app.diagrams.net" modified="2026-06-03T00:00:00.000Z" agent="Claude Code" version="21.0.0">
+  <diagram name="Arquitectura Explain-Up" id="explain-up-arch">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="1">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ══════════════════════════════════════════════
+             CAPES DE FONS
+        ══════════════════════════════════════════════ -->
+        <mxCell id="bg_input" value="DADES D'ENTRADA" style="swimlane;startSize=22;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=10;fontColor=#23445D;" vertex="1" parent="1">
+          <mxGeometry x="60" y="20" width="860" height="105" as="geometry"/>
+        </mxCell>
+        <mxCell id="bg_config" value="CONFIGURACIÓ" style="swimlane;startSize=22;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=10;fontColor=#23445D;" vertex="1" parent="1">
+          <mxGeometry x="60" y="145" width="860" height="85" as="geometry"/>
+        </mxCell>
+        <mxCell id="bg_inf" value="INFERÈNCIA" style="swimlane;startSize=22;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=10;fontColor=#23445D;" vertex="1" parent="1">
+          <mxGeometry x="60" y="250" width="860" height="185" as="geometry"/>
+        </mxCell>
+        <mxCell id="bg_out" value="OUTPUT BRUT" style="swimlane;startSize=22;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=10;fontColor=#23445D;" vertex="1" parent="1">
+          <mxGeometry x="60" y="455" width="860" height="85" as="geometry"/>
+        </mxCell>
+        <mxCell id="bg_eval" value="AVALUACIÓ" style="swimlane;startSize=22;fillColor=#ffe6cc;strokeColor=#d6b656;fontStyle=1;fontSize=10;fontColor=#23445D;" vertex="1" parent="1">
+          <mxGeometry x="60" y="560" width="860" height="115" as="geometry"/>
+        </mxCell>
+        <mxCell id="bg_res" value="RESULTATS" style="swimlane;startSize=22;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=10;fontColor=#23445D;" vertex="1" parent="1">
+          <mxGeometry x="60" y="695" width="860" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- ══════════════════════════════════════════════
+             CAPA 1 — DADES D'ENTRADA
+        ══════════════════════════════════════════════ -->
+        <mxCell id="inp1" value="&lt;b&gt;test_poor.xlsx&lt;/b&gt;&lt;br&gt;12 textos · alta complexitat&lt;br&gt;(anotació humana)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="bg_input">
+          <mxGeometry x="60" y="30" width="240" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="inp2" value="&lt;b&gt;exemples_lectura_facil_formatted.xlsx&lt;/b&gt;&lt;br&gt;11 textos · domini divers&lt;br&gt;(Lectura Fàcil certificada)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="bg_input">
+          <mxGeometry x="560" y="30" width="265" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ══════════════════════════════════════════════
+             CAPA 2 — CONFIGURACIÓ
+        ══════════════════════════════════════════════ -->
+        <mxCell id="conf1" value="&lt;b&gt;general_registry.py&lt;/b&gt;&lt;br&gt;Models × Prompts × Datasets" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="bg_config">
+          <mxGeometry x="60" y="28" width="230" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="main" value="&lt;b&gt;run_all_models.py&lt;/b&gt;&lt;br&gt;Orquestrador principal · itera totes les combinacions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontColor=#23445D;fontStyle=1;" vertex="1" parent="bg_config">
+          <mxGeometry x="300" y="28" width="280" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="conf2" value="&lt;b&gt;models.py&lt;/b&gt;&lt;br&gt;Endpoints Ollama" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="bg_config">
+          <mxGeometry x="598" y="28" width="200" height="48" as="geometry"/>
+        </mxCell>
+
+        <!-- ══════════════════════════════════════════════
+             CAPA 3 — INFERÈNCIA
+        ══════════════════════════════════════════════ -->
+        <mxCell id="lc" value="&lt;b&gt;LangChain&lt;/b&gt;&lt;br&gt;Injecció de prompts i orquestració de cadenes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="bg_inf">
+          <mxGeometry x="60" y="30" width="245" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="ollama" value="&lt;b&gt;Ollama&lt;/b&gt;&lt;br&gt;Servidor d'inferència LLM local (GPU)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="bg_inf">
+          <mxGeometry x="320" y="30" width="230" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="prompts" value="&lt;b&gt;20 Tècniques de Prompting&lt;/b&gt;&lt;br&gt;V0–V8 (pròpies) · Zero-Shot · Few-Shot · Role · CoT · Zero-Shot CoT · ToT · Self-Consistency · Self-Refinement · Expert Ensemble · Meta-Prompting · MOTOR · AUDIT" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="bg_inf">
+          <mxGeometry x="565" y="25" width="280" height="75" as="geometry"/>
+        </mxCell>
+        <mxCell id="llms" value="&lt;b&gt;Models LLM Locals — 8 models (8B → 70B)&lt;/b&gt;&lt;br&gt;llama3.3 (70B) · gemma2:27b · llama3.1:8b · mistral-nemo (12B) · command-r (35B) · qwen2.5:32b · mixtral (47B MoE) · aya-expanse:32b" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="bg_inf">
+          <mxGeometry x="60" y="115" width="785" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- ══════════════════════════════════════════════
+             CAPA 4 — OUTPUT BRUT
+        ══════════════════════════════════════════════ -->
+        <mxCell id="jsonl" value="&lt;b&gt;results.jsonl&lt;/b&gt;&lt;br&gt;Sortida per cada combinació: model × prompt × dataset × temperatura (3.666 outputs)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontSize=11;" vertex="1" parent="bg_out">
+          <mxGeometry x="220" y="18" width="430" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- ══════════════════════════════════════════════
+             CAPA 5 — AVALUACIÓ
+        ══════════════════════════════════════════════ -->
+        <mxCell id="eval" value="&lt;b&gt;evaluator.py&lt;/b&gt;&lt;br&gt;evaluate_excel.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="bg_eval">
+          <mxGeometry x="60" y="28" width="200" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="metrics" value="&lt;b&gt;7 Mètriques Automàtiques → Score Compost [0–1]&lt;/b&gt;&lt;br&gt;SARI · BERTScore F1 · Levenshtein · Flesch RE · CR ratio · TTR ratio · CWR ratio" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="bg_eval">
+          <mxGeometry x="280" y="28" width="545" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ══════════════════════════════════════════════
+             CAPA 6 — RESULTATS
+        ══════════════════════════════════════════════ -->
+        <mxCell id="res1" value="&lt;b&gt;Excel de Resultats&lt;/b&gt;&lt;br&gt;Mètriques per text + resum" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="bg_res">
+          <mxGeometry x="60" y="20" width="220" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="res2" value="&lt;b&gt;Gràfics PNG&lt;/b&gt;&lt;br&gt;update_plots.py" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="bg_res">
+          <mxGeometry x="330" y="20" width="220" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="res3" value="&lt;b&gt;Documents Word&lt;/b&gt;&lt;br&gt;Estudi amb usuaris finals" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="bg_res">
+          <mxGeometry x="600" y="20" width="220" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- ══════════════════════════════════════════════
+             FLETXES
+        ══════════════════════════════════════════════ -->
+        <!-- Inputs → main -->
+        <mxCell id="a1" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" source="inp1" target="main" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a2" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" source="inp2" target="main" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Config → main (dashed = lectura) -->
+        <mxCell id="a3" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;" edge="1" source="conf1" target="main" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="a4" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;" edge="1" source="conf2" target="main" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- main → LangChain -->
+        <mxCell id="a5" style="edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="main" target="lc" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- LangChain → Ollama -->
+        <mxCell id="a6" style="edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="lc" target="ollama" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Prompts → LangChain (dashed) -->
+        <mxCell id="a7" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;" edge="1" source="prompts" target="lc" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Ollama → LLMs -->
+        <mxCell id="a8" style="edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="ollama" target="llms" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- LLMs → jsonl -->
+        <mxCell id="a9" style="edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="llms" target="jsonl" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- jsonl → eval -->
+        <mxCell id="a10" style="edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="jsonl" target="eval" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- eval → metrics -->
+        <mxCell id="a11" style="edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="eval" target="metrics" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- eval → res1 (Excel) -->
+        <mxCell id="a12" style="edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="eval" target="res1" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- metrics → res2 (Plots) -->
+        <mxCell id="a13" style="edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="metrics" target="res2" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- jsonl → res3 (Word, dashed = procés paral·lel) -->
+        <mxCell id="a14" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;" edge="1" source="jsonl" target="res3" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
