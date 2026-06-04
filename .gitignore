@@ -38,5 +38,4 @@ plots/combined/
 plots/fase2/
 
 # ── Datos sensibles / ficheros grandes ────────────────────────────────────────
-data/*.xlsx
 data/*.xlsb
