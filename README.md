@@ -1,315 +1,118 @@
-# General Processor - Project Documentation
+# Easy Read adaptation with local LLMs
 
-A flexible LLM processing framework that reads Excel files and processes data through configurable LLM tasks with support for multiple providers.
+Evaluation framework for automatically adapting Spanish texts to **Easy Read** (*Lectura Fácil*, standard **UNE 153101:2018**) using open-weight language models running fully locally with [Ollama](https://ollama.com). No external APIs and no data sent to third parties.
 
-## Project Structure
+Bachelor's thesis (TFG) in Telecommunications Engineering, Universitat Rovira i Virgili, 2026. Grade: 9.4/10.
+
+> Detailed reports, methodology and discussion are in Spanish in [`docs/`](docs/).
+
+## Key results
+
+| | |
+|---|---|
+| Models evaluated | 8 local LLMs, 8B–70B parameters |
+| Prompting techniques | 20 (10 standard + 8 own iterative versions + 2 domain-specific) |
+| Reference texts | 23, across two datasets with human Easy Read references |
+| Automatic evaluations | **3,666** |
+| Temperature study | 32 configurations (2 models × 2 prompts × 4 temperatures × 2 datasets) |
+| Best SARI | **0.557** average for the V8 technique; **0.586** with `gemma2:27b` + V8 |
+
+Main findings:
+
+1. **Prompt design matters more than model size.** On administrative texts, `llama3.1:8b` with V8 ranks 6th out of 160 model × prompt combinations, ahead of most 30–70B configurations.
+2. **V8 (progressive imitation)**, a technique developed in this project, ranks first on administrative texts on SARI, BERTScore and Levenshtein similarity.
+3. **No technique wins in every domain.** V8 specialises in administrative text, while Chain-of-Thought generalises better across domains (inter-dataset gap of 0.04 vs 0.31).
+4. **Temperature does not help.** SARI and BERTScore peak at `T=0.0` on both datasets, and higher temperatures increase domain specialisation.
+5. **Recommended configuration:** `llama3.3` + `T=0.0` + V8 for administrative documents, or CoT for mixed-domain input.
+
+![Combined score by model and prompt](plots/justificacio/j3_heatmap_model_prompt.png)
+
+## How it works
 
 ```
-general_processor/
+Excel dataset ──► run_general.py ──► Ollama (local LLM) ──► outputs/{task}/{model}/
+  (original text,     │  task = prompt technique            (JSONL + Excel)
+   human reference)   │  model = MODEL_REGISTRY entry              │
+                      ▼                                            ▼
+              prompts/*.txt                          evaluation/ ──► 7 metrics + combined score
+                                                                      │
+                                                                      ▼
+                                                                  plots/ (rankings, heatmaps)
+```
+
+### Metrics
+
+| Metric | Measures | Best |
+|---|---|---|
+| SARI | Quality of simplification edits (add / keep / delete) against the reference | higher |
+| BERTScore F1 | Semantic preservation | higher |
+| Levenshtein similarity | Closeness to the human expert's wording | higher |
+| Flesch ratio | Readability (Fernández Huerta adaptation for Spanish) vs. reference | ≈ 1.0 |
+| Compression ratio | Output length vs. reference | ≈ 1.0 |
+| Complex-word ratio | Share of complex words vs. reference | ≈ 1.0 |
+| Type-token ratio | Lexical diversity vs. reference | ≈ 1.0 |
+
+The seven metrics are normalised and aggregated into a single **combined score [0–1]** used for rankings. Rationale: [`docs/justificacion_metricas.md`](docs/justificacion_metricas.md).
+
+### Models
+
+`llama3.1:8b` · `mistral-nemo` (12B) · `gemma2:27b` · `qwen2.5:32b` · `aya-expanse:32b` · `command-r` (35B) · `mixtral` (47B MoE) · `llama3.3` (70B)
+
+All runs used `temperature=0.0` and `seed=42` for reproducibility, except in the temperature study.
+
+## Repository structure
+
+```
+├── run_general.py            # Generation: one task (prompt) × one model over an Excel dataset
+├── run_all_models.py         # Runs a task over every model in the registry
+├── pipeline_complete.py      # Generation + evaluation in one command
 ├── config/
-│   ├── __init__.py
-│   ├── credentials.py          # Load API keys from .env
-│   ├── models.py               # MODEL_REGISTRY with all LLM configurations
-│   └── general_registry.py     # GENERAL_REGISTRY with task configurations
-├── prompts/
-│   ├── classification_system.txt
-│   ├── classification_user.txt
-│   ├── extraction_system.txt
-│   ├── extraction_user.txt
-│   ├── sentiment_system.txt
-│   ├── sentiment_user.txt
-│   ├── custom_system.txt
-│   └── custom_user.txt
-├── data/                       # Input Excel files
-├── outputs/                    # Results (JSONL + Excel)
-├── run_general.py             # Main script
-├── requirements.txt           # Dependencies
-└── README.md                  # This file
+│   ├── models.py             # MODEL_REGISTRY (Ollama models and parameters)
+│   └── general_registry.py   # GENERAL_REGISTRY (prompt techniques)
+├── prompts/                  # System and user prompts for each technique (v0–v8, cot, few_shot…)
+├── evaluation/
+│   ├── metrics/              # SARI, BERTScore, Levenshtein, Flesch, ROUGE, BLEU, NER density…
+│   ├── evaluate_excel.py     # Evaluates generated outputs against the references
+│   └── fase2/                # Temperature study
+├── plots/                    # Plotting scripts and final figures (plots/justificacio/)
+├── data/                     # Datasets (original text + human Easy Read reference)
+└── docs/                     # Phase reports, metric rationale, user study, thesis
 ```
 
-## Key Features
+## Running it
 
-- **Multiple LLM Providers**: Ollama, OpenAI, Anthropic, Google
-- **Flexible Input Format**: Excel with configurable column names
-- **No Schema Required**: Works with raw LLM output (JSON or text)
-- **Task-Based Registry**: Organize prompts and configuration by task
-- **Dual Output Format**: JSONL for line-by-line processing + Excel snapshot
-- **Error Handling**: Captures and logs errors while continuing processing
-
-## Excel Input Format
-
-Your Excel file should have exactly 3 data fields:
-
-| Column | Description |
-|--------|-------------|
-| `number` | A numeric or string identifier for the item |
-| `title` | A title or name for the item |
-| `text` | The main text content to be processed by the LLM |
-
-Plus an ID column (customizable, default: `id`) for unique identification.
-
-**Example:**
-```
-id | number | title         | text
-1  | 101    | Item One      | This is the text content to analyze...
-2  | 102    | Item Two      | Another piece of text content...
-```
-
-## Setup
-
-### 1. Install Dependencies
+Requirements: Python 3.10+, [Ollama](https://ollama.com) and enough hardware for the chosen model. The 70B models need a high-memory GPU; `llama3.1:8b` runs on a standard workstation.
 
 ```bash
 pip install -r requirements.txt
+python -m spacy download es_core_news_sm
+ollama pull llama3.1:8b
+
+# Generate Easy Read versions with the V8 technique
+python run_general.py --excel data/Test_poor.xlsx --sheet Hoja1 --task v8 --model llama3.1:8b
+
+# Evaluate the outputs
+python evaluation/evaluate_excel.py --version v8 --dataset test_poor --sheet Hoja1
 ```
 
-### 2. Configure Credentials
+The reported results come from the original runs of the full study and are documented in [`docs/`](docs/). Reproducing all 3,666 generations requires hardware able to run the 70B models.
 
-Create a `.env` file in the project root:
+## Documentation
 
-```
-OPENAI_API_KEY=your_key_here
-ANTHROPIC_API_KEY=your_key_here
-GOOGLE_API_KEY=your_key_here
-```
+- [Phase 1 — models and prompting techniques](docs/fase1_modelos_y_prompts.md)
+- [Phase 2 — effect of temperature](docs/fase2_temperatura.md)
+- [Metric rationale](docs/justificacion_metricas.md)
+- [User study](docs/estudio_usuarios/)
+- [System architecture diagram (draw.io)](docs/arquitectura_sistema.drawio)
+- [Thesis (Catalan)](docs/memoria_tfg.md)
 
-For Ollama models, no API key is needed (runs locally).
+## Limitations
 
-### 3. Add or Modify Prompts
+- Small datasets (11–12 texts each): results are indicative, not statistically conclusive.
+- Automatic metrics compare against a single human reference; human validation is still needed.
+- Spanish only.
 
-Edit prompt files in the `prompts/` folder:
-- `{task}_system.txt`: System prompt (instructions/role)
-- `{task}_user.txt`: User prompt template (can use `{title}` and `{text}` placeholders)
+## Author
 
-### 4. Register Your Model
-
-Edit `config/models.py` to add new LLM configurations:
-
-```python
-"my-model": {
-    "provider": "openai",  # or ollama, anthropic, google
-    "temperature": 0.0,
-    "seed": 42,
-}
-```
-
-### 5. Register Your Task
-
-Edit `config/general_registry.py` to add new tasks:
-
-```python
-"my-task": {
-    "name": "my-task",
-    "system_prompt": Path("prompts/my-task_system.txt"),
-    "user_prompt": Path("prompts/my-task_user.txt"),
-    "output_prefix": "my-task",
-}
-```
-
-## Usage
-
-### Basic Command
-
-```bash
-python run_general.py \
-  --excel data/input.xlsx \
-  --sheet Sheet1 \
-  --task classification \
-  --model gpt-4o-mini
-```
-
-### Full Options
-
-```bash
-python run_general.py \
-  --excel data/input.xlsx \
-  --sheet Sheet1 \
-  --task classification \
-  --model gpt-4o-mini \
-  --id-col id \
-  --number-col number \
-  --title-col title \
-  --text-col text \
-  --from-row 0 \
-  --to-row 100
-```
-
-### Available Tasks
-
-Currently available tasks:
-- `classification` - Classify text into categories
-- `extraction` - Extract key information
-- `sentiment` - Analyze sentiment
-- `custom` - Generic analysis
-
-### Available Models
-
-See `config/models.py` for all registered models. Examples:
-
-**Local (Ollama):**
-- `llama3:8b`
-- `qwen3:8b`
-- `mistral`
-- `deepseek-r1`
-
-**OpenAI:**
-- `gpt-4o-mini`
-- `gpt-4o`
-
-**Anthropic:**
-- `claude-3-5-sonnet-20241022`
-- `claude-3-opus-20250219`
-
-**Google:**
-- `gemini-1.5-pro`
-- `gemini-2.0-flash`
-
-## Output Format
-
-Results are saved in `outputs/{task}/{model}/`:
-
-### results.jsonl
-Each line is a JSON object with:
-```json
-{
-  "timestamp": "2025-03-24T10:30:00+00:00",
-  "item_id": "1",
-  "number": 101,
-  "title": "Item Title",
-  "task": "classification",
-  "model": "gpt-4o-mini",
-  "provider": "openai",
-  "result": { ... },  // LLM output (parsed JSON or raw)
-}
-```
-
-### results.xlsx
-Excel snapshot with all results deduplicated by `item_id`.
-
-## Examples
-
-### Example 1: Classify customer feedback
-
-```bash
-python run_general.py \
-  --excel data/customer_feedback.xlsx \
-  --sheet Feedback \
-  --task classification \
-  --model gpt-4o-mini \
-  --number-col feedback_id \
-  --title-col customer_name \
-  --text-col feedback_text
-```
-
-### Example 2: Extract information with Ollama
-
-```bash
-python run_general.py \
-  --excel data/documents.xlsx \
-  --sheet Documents \
-  --task extraction \
-  --model llama3:8b \
-  --number-col doc_number \
-  --title-col doc_title \
-  --text-col doc_content \
-  --from-row 0 \
-  --to-row 50
-```
-
-### Example 3: Analyze sentiment with Anthropic
-
-```bash
-python run_general.py \
-  --excel data/reviews.xlsx \
-  --sheet Reviews \
-  --task sentiment \
-  --model claude-3-5-sonnet-20241022 \
-  --number-col review_id \
-  --title-col product_name \
-  --text-col review_text
-```
-
-## Creating Custom Tasks
-
-### Step 1: Create prompt files
-
-Create `prompts/mynewtask_system.txt`:
-```
-You are an expert at [your task].
-
-Your job is to [describe what to do].
-
-Return ONLY valid JSON output with the following fields:
-- field1: description
-- field2: description
-```
-
-Create `prompts/mynewtask_user.txt`:
-```
-Analyze the following:
-
-Title: {title}
-Text: {text}
-
-Provide your analysis in JSON format with:
-- field1: ...
-- field2: ...
-
-Return ONLY the JSON object, no additional text.
-```
-
-### Step 2: Register in config/general_registry.py
-
-```python
-"mynewtask": {
-    "name": "mynewtask",
-    "system_prompt": Path("prompts/mynewtask_system.txt"),
-    "user_prompt": Path("prompts/mynewtask_user.txt"),
-    "output_prefix": "mynewtask",
-}
-```
-
-### Step 3: Run
-
-```bash
-python run_general.py \
-  --excel data/input.xlsx \
-  --task mynewtask \
-  --model gpt-4o-mini
-```
-
-## Error Handling
-
-If an error occurs during processing:
-- The error is logged to the output JSONL file
-- Processing continues with the next item
-- Check JSONL for error records with `"error"` field
-
-## Troubleshooting
-
-### "Column not found" error
-Make sure your Excel column names match the `--*-col` arguments.
-
-### "Model not found" error
-Check that your model is registered in `config/models.py`.
-
-### "Task not found" error
-Check that your task is registered in `config/general_registry.py`.
-
-### API key errors
-Ensure your `.env` file has the correct API keys and they're loaded properly.
-
-### Ollama models not working
-Make sure Ollama is running: `ollama serve`
-
-## Advantages Over Original Project
-
-1. **No Schema Required**: Simpler, more flexible for different tasks
-2. **General Purpose**: Not limited to specific evaluation domains
-3. **Registry-Based**: Easy to add new tasks and models
-4. **Raw Output Support**: Works with any JSON structure the LLM produces
-5. **Cleaner API**: Simpler command-line interface for common use cases
-
-## License
-
-[Your license here]
+**Lucas Alejo Dening Céspedes** · Telecommunications Engineering, URV  
+Supervisor: Dr. Antonio Moreno Ribas

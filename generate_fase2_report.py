@@ -10,7 +10,7 @@ from docx.oxml import OxmlElement
 from pathlib import Path
 
 ROOT = Path(__file__).parent
-OUT  = ROOT / "informe_fase2_report.docx"
+OUT  = ROOT / "docs" / "fase2_temperatura.docx"
 
 C_BLUE_D = RGBColor(0, 70, 127)
 C_BLUE_M = RGBColor(0, 114, 198)
